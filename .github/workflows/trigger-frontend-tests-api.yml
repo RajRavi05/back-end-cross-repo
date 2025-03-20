@@ -1,0 +1,19 @@
+# .github/workflows/trigger-frontend-tests-api.yml
+name: Trigger Frontend Tests (API)
+
+on:
+  push:
+    branches:
+      - main # or any branches you want to monitor
+
+jobs:
+  trigger-frontend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger frontend workflow
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.REPO_ACCESS_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/RajRavi05/cross-repo-test/actions/workflows/playwright.yml/dispatches \
+            -d '{"ref":"main"}'
