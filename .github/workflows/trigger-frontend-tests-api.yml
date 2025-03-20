@@ -1,24 +1,19 @@
-name: Trigger Frontend Tests
+# .github/workflows/trigger-frontend-tests-api.yml
+name: Trigger Frontend Tests (API)
 
 on:
   push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
-  # Enable manual triggering
-  workflow_dispatch:
+    branches:
+      - main # or any branches you want to monitor
 
 jobs:
   trigger-frontend-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Trigger frontend repository tests
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          repository: RajRavi05/cross-repo-test
-          event-type: backend-push
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+      - name: Trigger frontend workflow
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.REPO_ACCESS_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/your-username/frontend-repo-name/actions/workflows/playwright.yml/dispatches \
+            -d '{"ref":"main"}'
