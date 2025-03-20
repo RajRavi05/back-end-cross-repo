@@ -18,7 +18,7 @@ jobs:
       - name: Trigger frontend repository tests
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.FRONTEND_REPO_PAT }}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
           repository: RajRavi05/cross-repo-test
           event-type: backend-push
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
